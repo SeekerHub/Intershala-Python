@@ -2,16 +2,16 @@
 
 # Form implementation generated from reading ui file 'Layout.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
-
-from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import sqlite3 as db
+import score
+from Evaluate import Ui_Evaluate
 
 con = db.connect('Info.db')
 curs = con.cursor()
@@ -75,7 +75,7 @@ for p in req:
 
 data_1 = dict(zip(play,ctg))
 data_value = dict(zip(play,datalist))
-print(data_value)
+# print(data_value)
 
 class Ui_MainWindow(object):
     def __init__(self, l, h=0):
@@ -86,9 +86,18 @@ class Ui_MainWindow(object):
         self.l = l
         self.h = h
 
+    def openWindow(self):
+        itemsTextList =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
+        self.window = QtWidgets.QMainWindow()
+        self.itemsList = itemsTextList
+        self.ui = Ui_Evaluate(self.itemsList)
+
+        self.ui.setupUi(self.window)
+        self.window.show()
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(730, 633)
+        MainWindow.resize(727, 633)
         MainWindow.setMaximumSize(QtCore.QSize(730, 16777215))
         MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -103,6 +112,30 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         spacerItem = QtWidgets.QSpacerItem(18, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
+        self.label = QtWidgets.QLabel(self.horizontalWidget)
+        self.label.setObjectName("label")
+        self.horizontalLayout.addWidget(self.label)
+        self.label_10 = QtWidgets.QLabel(self.horizontalWidget)
+        self.label_10.setObjectName("label_10")
+        self.horizontalLayout.addWidget(self.label_10)
+        spacerItem1 = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
+        self.label_4 = QtWidgets.QLabel(self.horizontalWidget)
+        self.label_4.setObjectName("label_4")
+        self.horizontalLayout.addWidget(self.label_4)
+        self.label_9 = QtWidgets.QLabel(self.horizontalWidget)
+        self.label_9.setObjectName("label_9")
+        self.horizontalLayout.addWidget(self.label_9)
+        spacerItem2 = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem2)
+        self.label_5 = QtWidgets.QLabel(self.horizontalWidget)
+        self.label_5.setObjectName("label_5")
+        self.horizontalLayout.addWidget(self.label_5)
+        self.label_8 = QtWidgets.QLabel(self.horizontalWidget)
+        self.label_8.setObjectName("label_8")
+        self.horizontalLayout.addWidget(self.label_8)
+        spacerItem3 = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem3)
         self.label_6 = QtWidgets.QLabel(self.horizontalWidget)
         self.label_6.setStyleSheet("font: 75 9pt \"Open Sans\";")
         self.label_6.setObjectName("label_6")
@@ -110,30 +143,6 @@ class Ui_MainWindow(object):
         self.label_7 = QtWidgets.QLabel(self.horizontalWidget)
         self.label_7.setObjectName("label_7")
         self.horizontalLayout.addWidget(self.label_7)
-        spacerItem1 = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem1)
-        self.label_5 = QtWidgets.QLabel(self.horizontalWidget)
-        self.label_5.setObjectName("label_5")
-        self.horizontalLayout.addWidget(self.label_5)
-        self.label_8 = QtWidgets.QLabel(self.horizontalWidget)
-        self.label_8.setObjectName("label_8")
-        self.horizontalLayout.addWidget(self.label_8)
-        spacerItem2 = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem2)
-        self.label_4 = QtWidgets.QLabel(self.horizontalWidget)
-        self.label_4.setObjectName("label_4")
-        self.horizontalLayout.addWidget(self.label_4)
-        self.label_9 = QtWidgets.QLabel(self.horizontalWidget)
-        self.label_9.setObjectName("label_9")
-        self.horizontalLayout.addWidget(self.label_9)
-        spacerItem3 = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem3)
-        self.label = QtWidgets.QLabel(self.horizontalWidget)
-        self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label)
-        self.label_10 = QtWidgets.QLabel(self.horizontalWidget)
-        self.label_10.setObjectName("label_10")
-        self.horizontalLayout.addWidget(self.label_10)
         spacerItem4 = QtWidgets.QSpacerItem(18, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem4)
         self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
@@ -144,6 +153,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.list_1 = QtWidgets.QListWidget(self.horizontalLayoutWidget_2)
         font = QtGui.QFont()
+        font.setFamily("Ubuntu")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
@@ -163,6 +173,11 @@ class Ui_MainWindow(object):
         self.line_2.setObjectName("line_2")
         self.horizontalLayout_3.addWidget(self.line_2)
         self.list_2 = QtWidgets.QListWidget(self.horizontalLayoutWidget_2)
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
         self.list_2.setFont(font)
         self.list_2.setStyleSheet("border-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y2:0.693, stop:0.603448 rgba(0, 0, 26, 255));\n"
 "background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));")
@@ -171,7 +186,8 @@ class Ui_MainWindow(object):
         self.label_14 = QtWidgets.QLabel(self.centralwidget)
         self.label_14.setGeometry(QtCore.QRect(190, 90, 171, 51))
         font = QtGui.QFont()
-        font.setPointSize(11)
+        font.setFamily("Ubuntu")
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_14.setFont(font)
@@ -181,23 +197,42 @@ class Ui_MainWindow(object):
         self.label_14.setObjectName("label_14")
         self.label_11 = QtWidgets.QLabel(self.centralwidget)
         self.label_11.setGeometry(QtCore.QRect(20, 90, 171, 51))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_11.setFont(font)
         self.label_11.setStyleSheet("background-color: rgb(238, 238, 236);\n"
 "background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));")
         self.label_11.setObjectName("label_11")
         self.label_15 = QtWidgets.QLabel(self.centralwidget)
         self.label_15.setGeometry(QtCore.QRect(540, 90, 171, 51))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_15.setFont(font)
         self.label_15.setStyleSheet("background-color: rgb(238, 238, 236);\n"
 "background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));\n"
 "padding: 0px 0px 0px 0px;")
         self.label_15.setObjectName("label_15")
         self.label_12 = QtWidgets.QLabel(self.centralwidget)
         self.label_12.setGeometry(QtCore.QRect(370, 90, 171, 51))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_12.setFont(font)
         self.label_12.setStyleSheet("background-color: rgb(238, 238, 236);\n"
 "background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));")
         self.label_12.setObjectName("label_12")
         self.label_13 = QtWidgets.QLabel(self.centralwidget)
         self.label_13.setGeometry(QtCore.QRect(370, 150, 171, 61))
         font = QtGui.QFont()
+        font.setFamily("Ubuntu")
         font.setPointSize(14)
         font.setBold(True)
         font.setWeight(75)
@@ -207,6 +242,7 @@ class Ui_MainWindow(object):
         self.label_16 = QtWidgets.QLabel(self.centralwidget)
         self.label_16.setGeometry(QtCore.QRect(540, 150, 171, 61))
         font = QtGui.QFont()
+        font.setFamily("Ubuntu")
         font.setPointSize(14)
         font.setBold(True)
         font.setWeight(75)
@@ -233,9 +269,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addItem(spacerItem5)
         self.rb1 = QtWidgets.QRadioButton(self.verticalLayoutWidget)
         font = QtGui.QFont()
+        font.setFamily("Ubuntu")
         font.setPointSize(12)
         font.setBold(True)
-        font.setWeight(65)
+        font.setWeight(75)
         self.rb1.setFont(font)
         self.rb1.setStyleSheet("color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));\n"
 "color: rgb(0, 0, 0);")
@@ -245,6 +282,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addItem(spacerItem6)
         self.rb2 = QtWidgets.QRadioButton(self.verticalLayoutWidget)
         font = QtGui.QFont()
+        font.setFamily("Ubuntu")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
@@ -256,6 +294,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addItem(spacerItem7)
         self.rb3 = QtWidgets.QRadioButton(self.verticalLayoutWidget)
         font = QtGui.QFont()
+        font.setFamily("Ubuntu")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
@@ -267,6 +306,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addItem(spacerItem8)
         self.rb4 = QtWidgets.QRadioButton(self.verticalLayoutWidget)
         font = QtGui.QFont()
+        font.setFamily("Ubuntu")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
@@ -280,13 +320,25 @@ class Ui_MainWindow(object):
         self.rb3.raise_()
         self.rb4.raise_()
         self.rb1.raise_()
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(440, 540, 231, 41))
-        self.pushButton.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y2:0.693, stop:0.603448 rgba(42, 169, 0, 230));\n"
+        self.pb_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pb_2.setGeometry(QtCore.QRect(440, 540, 231, 41))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pb_2.setFont(font)
+        self.pb_2.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y2:0.693, stop:0.603448 rgba(42, 169, 0, 230));\n"
 "color: rgb(238, 238, 236);")
-        self.pushButton.setObjectName("pushButton")
+        self.pb_2.setObjectName("pb_2")
         self.pb_1 = QtWidgets.QPushButton(self.centralwidget)
         self.pb_1.setGeometry(QtCore.QRect(50, 540, 231, 41))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pb_1.setFont(font)
         self.pb_1.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y2:0.693, stop:0.603448 rgba(255, 18, 22, 221));\n"
 "color: rgb(238, 238, 236);")
         self.pb_1.setObjectName("pb_1")
@@ -297,6 +349,13 @@ class Ui_MainWindow(object):
         self.line_5.setObjectName("line_5")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(20, 0, 131, 21))
+        font = QtGui.QFont()
+        font.setFamily("Open Sans")
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(9)
+        self.label_2.setFont(font)
         self.label_2.setStyleSheet("font: 75 11pt \"Open Sans\";\n"
 "background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));")
         self.label_2.setObjectName("label_2")
@@ -312,7 +371,7 @@ class Ui_MainWindow(object):
         self.line_7.setObjectName("line_7")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 730, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 727, 25))
         self.menubar.setObjectName("menubar")
         self.menuManage_team = QtWidgets.QMenu(self.menubar)
         self.menuManage_team.setObjectName("menuManage_team")
@@ -321,25 +380,60 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.actionNew_Team = QtWidgets.QAction(MainWindow)
+        font = QtGui.QFont()
+        font.setFamily("Raleway")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.actionNew_Team.setFont(font)
         self.actionNew_Team.setObjectName("actionNew_Team")
         self.actionEvaluate_Team = QtWidgets.QAction(MainWindow)
         self.actionEvaluate_Team.setObjectName("actionEvaluate_Team")
         self.actionDelete_Team = QtWidgets.QAction(MainWindow)
         self.actionDelete_Team.setObjectName("actionDelete_Team")
         self.actionClose = QtWidgets.QAction(MainWindow)
+        font = QtGui.QFont()
+        font.setFamily("Raleway")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.actionClose.setFont(font)
         self.actionClose.setObjectName("actionClose")
         self.actionManage_Team = QtWidgets.QAction(MainWindow)
+        font = QtGui.QFont()
+        font.setFamily("Raleway")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.actionManage_Team.setFont(font)
         self.actionManage_Team.setObjectName("actionManage_Team")
         self.actionSave_Team = QtWidgets.QAction(MainWindow)
+        font = QtGui.QFont()
+        font.setFamily("Raleway")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.actionSave_Team.setFont(font)
         self.actionSave_Team.setObjectName("actionSave_Team")
+        self.actionOpen_Team = QtWidgets.QAction(MainWindow)
+        font = QtGui.QFont()
+        font.setFamily("Raleway")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.actionOpen_Team.setFont(font)
+        self.actionOpen_Team.setObjectName("actionOpen_Team")
         self.menuManage_team.addAction(self.actionNew_Team)
+        self.menuManage_team.addAction(self.actionOpen_Team)
         self.menuManage_team.addAction(self.actionManage_Team)
         self.menuManage_team.addAction(self.actionSave_Team)
         self.menuManage_team.addSeparator()
-        self.menuManage_team.addAction(self.actionDelete_Team)
         self.menuManage_team.addAction(self.actionClose)
         self.menubar.addAction(self.menuManage_team.menuAction())
 
+
+
+        # self.actionEvaluate_Team.triggered.connect(self.openWindow)
         self.actionNew_Team.triggered.connect(self.NewTeam)
 
         self.list_1.itemDoubleClicked.connect(self.removelist1)
@@ -349,27 +443,36 @@ class Ui_MainWindow(object):
         self.rb2.toggled.connect(self.checkstate)
         self.rb3.toggled.connect(self.checkstate)
         self.rb4.toggled.connect(self.checkstate)
+        # self.Saveteam()
+        self.pb_2.clicked.connect(self.openWindow)
+        self.actionEvaluate_Team.triggered.connect(self.openWindow)
 
 
         self.retranslateUi(MainWindow)
+        self.actionClose.triggered.connect(MainWindow.close)
+        self.pb_1.pressed.connect(MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+
+
+
+    def Saveteam(self):
+        print("Working")
+        itemsTextList =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
+        print(itemsTextList)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"justify\"><span style=\" font-size:12pt; font-weight:600; color:#2e3436;\">Batsman : </span></p></body></html>"))
-        self.label_7.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">0</span></p></body></html>"))
-
-        self.label_4.setText(_translate("MainWindow", "<html><head/><body><p align=\"justify\"><span style=\" font-size:12pt; font-weight:600; color:#2e3436;\">Bowler : </span></p></body></html>"))
-        self.label_9.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">0</span></p></body></html>"))
-
-        self.label_6.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600; color:#2e3436;\">Wicket-Keeper:</span></p></body></html>"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"justify\"><span style=\" font-size:11pt; font-weight:600; color:#2e3436;\">Batsman : </span></p></body></html>"))
         self.label_10.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">0</span></p></body></html>"))
-
-        self.label_5.setText(_translate("MainWindow", "<html><head/><body><p align=\"justify\"><span style=\" font-size:12pt; font-weight:600;\">Allrounder :</span></p></body></html>"))
-        self.label_8.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">0</span></p></body></html>"))
-
-
+        self.label_4.setText(_translate("MainWindow", "<html><head/><body><p align=\"justify\"><span style=\" font-size:11pt; font-weight:600; color:#2e3436;\">Bowler : </span></p></body></html>"))
+        self.label_9.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">0</span></p></body></html>"))
+        self.label_5.setText(_translate("MainWindow", "<html><head/><body><p align=\"justify\"><span style=\" font-size:11pt; font-weight:600;\">Allrounder :</span></p></body></html>"))
+        self.label_8.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; color:#edd400;\">0</span></p></body></html>"))
+        self.label_6.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt; font-weight:600; color:#2e3436;\">Wicket-Keeper:</span></p></body></html>"))
+        self.label_7.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">0</span></p></body></html>"))
         self.label_14.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">1000</span></p></body></html>"))
         self.label_11.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">Points Available : </span></p></body></html>"))
         self.label_15.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">Nil</span></p></body></html>"))
@@ -380,21 +483,24 @@ class Ui_MainWindow(object):
         self.rb2.setText(_translate("MainWindow", "BOWL"))
         self.rb3.setText(_translate("MainWindow", "WK"))
         self.rb4.setText(_translate("MainWindow", "AR"))
-        self.pushButton.setText(_translate("MainWindow", "SAVE TEAM"))
+        self.pb_2.setText(_translate("MainWindow", "SAVE TEAM"))
         self.pb_1.setText(_translate("MainWindow", "EXIT"))
-        self.label_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Your Selections</span></p></body></html>"))
+        self.label_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600; color:#555753;\">Your Selections</span></p></body></html>"))
         self.menuManage_team.setTitle(_translate("MainWindow", "Menu"))
         self.actionNew_Team.setText(_translate("MainWindow", "New Team"))
         self.actionEvaluate_Team.setText(_translate("MainWindow", "Evaluate Team"))
         self.actionDelete_Team.setText(_translate("MainWindow", "Delete Team"))
         self.actionClose.setText(_translate("MainWindow", "Close"))
-        self.actionManage_Team.setText(_translate("MainWindow", "Manage Team"))
+        self.actionManage_Team.setText(_translate("MainWindow", "Evaluate Team"))
         self.actionSave_Team.setText(_translate("MainWindow", "Save Team"))
-
+        self.actionOpen_Team.setText(_translate("MainWindow", "Open Team"))
+        # self.actionEvaluate_Team.triggered.connect(self.openWindow)
     def NewTeam(self):
         # print("Working")
         # print(play)
         Ui_MainWindow(1000)
+        self.list_1.clear()
+        self.list_2.clear()
         self.list_1.addItems(play)
         print(self.l)
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">1000</span></p></body></html>")
@@ -495,7 +601,7 @@ class Ui_MainWindow(object):
 
     def removelist2(self, item):
 
-        c = item.text()
+        # c = item.text()
         if(data_1.get(c)=='BAT'):
             n = data_value.get(c)
             self.bats-=1
@@ -540,6 +646,12 @@ class Ui_MainWindow(object):
         decrease = self.l + n
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(decrease))
         self.l = decrease
+
+
+
+        #open the pop up evaluate setWindowTitle
+
+
 
 if __name__ == "__main__":
     import sys

@@ -10,6 +10,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import sqlite3 as db
+import score
+from Evaluate import Ui_Evaluate
 
 con = db.connect('Info.db')
 curs = con.cursor()
@@ -84,6 +86,14 @@ class Ui_MainWindow(object):
         self.l = l
         self.h = h
 
+    def openWindow(self):
+        itemsTextList =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
+        self.window = QtWidgets.QMainWindow()
+        self.itemsList = itemsTextList
+        self.ui = Ui_Evaluate(self.itemsList)
+
+        self.ui.setupUi(self.window)
+        self.window.show()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -423,7 +433,7 @@ class Ui_MainWindow(object):
 
 
 
-
+        # self.actionEvaluate_Team.triggered.connect(self.openWindow)
         self.actionNew_Team.triggered.connect(self.NewTeam)
 
         self.list_1.itemDoubleClicked.connect(self.removelist1)
@@ -433,13 +443,24 @@ class Ui_MainWindow(object):
         self.rb2.toggled.connect(self.checkstate)
         self.rb3.toggled.connect(self.checkstate)
         self.rb4.toggled.connect(self.checkstate)
-
+        # self.Saveteam()
+        self.pb_2.clicked.connect(self.openWindow)
+        self.actionEvaluate_Team.triggered.connect(self.openWindow)
 
 
         self.retranslateUi(MainWindow)
         self.actionClose.triggered.connect(MainWindow.close)
         self.pb_1.pressed.connect(MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+
+
+
+    def Saveteam(self):
+        print("Working")
+        itemsTextList =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
+        print(itemsTextList)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -473,11 +494,13 @@ class Ui_MainWindow(object):
         self.actionManage_Team.setText(_translate("MainWindow", "Evaluate Team"))
         self.actionSave_Team.setText(_translate("MainWindow", "Save Team"))
         self.actionOpen_Team.setText(_translate("MainWindow", "Open Team"))
-
+        # self.actionEvaluate_Team.triggered.connect(self.openWindow)
     def NewTeam(self):
         # print("Working")
         # print(play)
         Ui_MainWindow(1000)
+        self.list_1.clear()
+        self.list_2.clear()
         self.list_1.addItems(play)
         print(self.l)
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">1000</span></p></body></html>")
@@ -623,6 +646,12 @@ class Ui_MainWindow(object):
         decrease = self.l + n
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(decrease))
         self.l = decrease
+
+
+
+        #open the pop up evaluate setWindowTitle
+
+
 
 if __name__ == "__main__":
     import sys
