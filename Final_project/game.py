@@ -30,7 +30,7 @@ bat = []
 ar = []
 wk = []
 for j in styel:
-    print(j)
+    # print(j)
     sql2 = 'SELECT player from Stats WHERE ctg=\'{}\''.format(j)
     curs.execute(sql2)
     r = curs.fetchall()
@@ -72,7 +72,7 @@ for p in req:
         else:
             ctg.append(r[i][0])
         i+=1
-
+# print(play)
 data_1 = dict(zip(play,ctg))
 data_value = dict(zip(play,datalist))
 # print(data_value)
@@ -388,7 +388,10 @@ class Ui_MainWindow(object):
         self.actionNew_Team.setFont(font)
         self.actionNew_Team.setObjectName("actionNew_Team")
         self.actionEvaluate_Team = QtWidgets.QAction(MainWindow)
-        self.actionEvaluate_Team.setObjectName("actionEvaluate_Team")
+        # self.actionEvaluate_Team.setObjectName("actionEvaluate_Team")
+
+        # self.menuManage_team.addAction(self.actionEvaluate_Team)
+
         self.actionDelete_Team = QtWidgets.QAction(MainWindow)
         self.actionDelete_Team.setObjectName("actionDelete_Team")
         self.actionClose = QtWidgets.QAction(MainWindow)
@@ -425,7 +428,11 @@ class Ui_MainWindow(object):
         self.actionOpen_Team.setObjectName("actionOpen_Team")
         self.menuManage_team.addAction(self.actionNew_Team)
         self.menuManage_team.addAction(self.actionOpen_Team)
-        self.menuManage_team.addAction(self.actionManage_Team)
+        # self.menuManage_team.addAction(self.actionManage_Team)
+
+        self.actionEvaluate_Team.setFont(font)
+        self.menuManage_team.addAction(self.actionEvaluate_Team)
+
         self.menuManage_team.addAction(self.actionSave_Team)
         self.menuManage_team.addSeparator()
         self.menuManage_team.addAction(self.actionClose)
@@ -433,7 +440,7 @@ class Ui_MainWindow(object):
 
 
 
-        # self.actionEvaluate_Team.triggered.connect(self.openWindow)
+        self.actionEvaluate_Team.triggered.connect(self.openWindow)
         self.actionNew_Team.triggered.connect(self.NewTeam)
 
         self.list_1.itemDoubleClicked.connect(self.removelist1)
@@ -444,7 +451,7 @@ class Ui_MainWindow(object):
         self.rb3.toggled.connect(self.checkstate)
         self.rb4.toggled.connect(self.checkstate)
         # self.Saveteam()
-        self.pb_2.clicked.connect(self.openWindow)
+        # self.pb_2.clicked.connect(self.openWindow)
         self.actionEvaluate_Team.triggered.connect(self.openWindow)
 
 
@@ -457,9 +464,9 @@ class Ui_MainWindow(object):
 
 
     def Saveteam(self):
-        print("Working")
+        # print("Working")
         itemsTextList =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
-        print(itemsTextList)
+        # print(itemsTextList)
 
 
     def retranslateUi(self, MainWindow):
@@ -498,11 +505,24 @@ class Ui_MainWindow(object):
     def NewTeam(self):
         # print("Working")
         # print(play)
+        self.bats = 0
+        self.bowls = 0
+        self.ars = 0
+        self.wks = 0
+        self.l = 1000
+        self.h = 0
+        self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.h))
+        self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.l))
+        self.label_10.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bats))
+        self.label_9.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bowls))
+        self.label_8.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.ars))
+        self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.wks))
+
         Ui_MainWindow(1000)
         self.list_1.clear()
         self.list_2.clear()
         self.list_1.addItems(play)
-        print(self.l)
+        # print(self.l)
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">1000</span></p></body></html>")
         self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">0</span></p></body></html>")
 
@@ -551,11 +571,19 @@ class Ui_MainWindow(object):
                 self.list_2.addItem(item.text())
 
         k = self.l - n
-        self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(k))
+        if k==0:
+            k < 0
+            self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(k))
+        else:
+            self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(k))
         self.l = k
         # print(self.h)
         increase = self.h + n
-        self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(increase))
+        if increase>1000:
+            increase = 0
+            self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(increase))
+        else:
+            self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(increase))
         self.h = increase
 
     def checkstate(self):
@@ -601,7 +629,7 @@ class Ui_MainWindow(object):
 
     def removelist2(self, item):
 
-        # c = item.text()
+        c = item.text()
         if(data_1.get(c)=='BAT'):
             n = data_value.get(c)
             self.bats-=1
