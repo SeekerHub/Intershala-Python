@@ -1,5 +1,9 @@
 # Intershala-Python
 Intershala Project assignment
-Contains Three projects:
-A book finder
-A Fantasy game layout
+Contains Two projects:
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+1. A book finder
+-------------------------------------------------------------------------------------------------------------------------------
+2. A Fantasy game layout
