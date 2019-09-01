@@ -5,9 +5,10 @@
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
-
-
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMessageBox
 import sqlite3 as db
 import score
@@ -15,7 +16,7 @@ from Evaluate import Ui_Evaluate
 
 con = db.connect('Info.db')
 curs = con.cursor()
-# sqlc = 'select PLayer from Books where title = \'{}\';'.format(name)
+
 sqlc = 'SELECT Player FROM Match'
 curs.execute(sqlc)
 r= curs.fetchall()
@@ -77,6 +78,8 @@ data_1 = dict(zip(play,ctg))
 data_value = dict(zip(play,datalist))
 # print(data_value)
 
+
+
 class Ui_MainWindow(object):
     def __init__(self, l, h=0):
         self.bats = 0
@@ -86,14 +89,19 @@ class Ui_MainWindow(object):
         self.l = l
         self.h = h
 
+
     def openWindow(self):
+
         itemsTextList =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
         self.window = QtWidgets.QMainWindow()
         self.itemsList = itemsTextList
         self.ui = Ui_Evaluate(self.itemsList)
-
         self.ui.setupUi(self.window)
         self.window.show()
+
+
+
+
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -439,7 +447,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuManage_team.menuAction())
 
 
-
+        self.actionOpen_Team.triggered.connect(self.openTeam)
         self.actionEvaluate_Team.triggered.connect(self.openWindow)
         self.actionNew_Team.triggered.connect(self.NewTeam)
 
@@ -502,29 +510,6 @@ class Ui_MainWindow(object):
         self.actionSave_Team.setText(_translate("MainWindow", "Save Team"))
         self.actionOpen_Team.setText(_translate("MainWindow", "Open Team"))
         # self.actionEvaluate_Team.triggered.connect(self.openWindow)
-    def NewTeam(self):
-        # print("Working")
-        # print(play)
-        self.bats = 0
-        self.bowls = 0
-        self.ars = 0
-        self.wks = 0
-        self.l = 1000
-        self.h = 0
-        self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.h))
-        self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.l))
-        self.label_10.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bats))
-        self.label_9.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bowls))
-        self.label_8.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.ars))
-        self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.wks))
-
-        Ui_MainWindow(1000)
-        self.list_1.clear()
-        self.list_2.clear()
-        self.list_1.addItems(play)
-        # print(self.l)
-        self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">1000</span></p></body></html>")
-        self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">0</span></p></body></html>")
 
 
 
@@ -675,10 +660,159 @@ class Ui_MainWindow(object):
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(decrease))
         self.l = decrease
 
+    def NewTeam(self, MainWindow):
+        Dialog2.show()
+        self.bats = 0
+        self.bowls = 0
+        self.ars = 0
+        self.wks = 0
+        self.l = 1000
+        self.h = 0
+        self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.h))
+        self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.l))
+        self.label_10.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bats))
+        self.label_9.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bowls))
+        self.label_8.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.ars))
+        self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.wks))
+
+        Ui_MainWindow(1000)
+        self.list_1.clear()
+        self.list_2.clear()
+        self.list_1.addItems(play)
+        # print(self.l)
+        self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">1000</span></p></body></html>")
+        self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">0</span></p></body></html>")
 
 
-        #open the pop up evaluate setWindowTitle
+    def openTeam(self, MainWindow):
+        Dialog.show()
 
+    def labelText(self, MainWindow, value):
+        self.label_16.setText(str(value))
+
+    # def labelText2(self, MainWindow, value2):
+    #     self.label_16.setText(str(value2))
+
+class Ui_Dialog2(object):
+    def setupUi(self, Dialog2):
+        Dialog2.setObjectName("Dialog2")
+        Dialog2.resize(369, 160)
+        Dialog2.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y2:0.693, stop:0.603448 rgba(0, 191, 183, 221));")
+        self.pushButton_2 = QtWidgets.QPushButton(Dialog2)
+        self.pushButton_2.setGeometry(QtCore.QRect(140, 110, 91, 33))
+        font = QtGui.QFont()
+        font.setFamily("Raleway")
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));\n"
+"background-color: rgb(186, 189, 182);")
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.label = QtWidgets.QLabel(Dialog2)
+        self.label.setGeometry(QtCore.QRect(70, 10, 231, 51))
+        font = QtGui.QFont()
+        font.setFamily("Raleway")
+        font.setPointSize(19)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.lineEdit = QtWidgets.QLineEdit(Dialog2)
+        self.lineEdit.setGeometry(QtCore.QRect(80, 70, 201, 31))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(11)
+        self.lineEdit.setFont(font)
+        self.lineEdit.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));")
+        self.lineEdit.setText("")
+        self.lineEdit.setClearButtonEnabled(True)
+        self.lineEdit.setObjectName("lineEdit")
+
+        self.pushButton_2.clicked.connect(self.CloseAndRefresh_2)
+
+        self.retranslateUi(Dialog2)
+        QtCore.QMetaObject.connectSlotsByName(Dialog2)
+
+    def retranslateUi(self, Dialog2):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog2.setWindowTitle(_translate("Dialog2", "Dialog2"))
+        self.pushButton_2.setText(_translate("Dialog2", "OK"))
+        self.label.setText(_translate("Dialog2", "<html><head/><body><p align=\"center\"><span style=\" color:#eeeeec;\">Enter Team Name</span></p></body></html>"))
+        self.lineEdit.setPlaceholderText(_translate("Dialog2", "Enter here"))
+
+    def CloseAndRefresh_2(self):
+        print("Working")
+        global value
+        value = self.lineEdit.text()
+        print(value)
+        ui.labelText(MainWindow, value)
+        Dialog2.close()
+
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(400, 198)
+        Dialog.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y2:0.693, stop:0.603448 rgba(0, 191, 183, 221));")
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setGeometry(QtCore.QRect(80, 20, 231, 51))
+        font = QtGui.QFont()
+        font.setFamily("Raleway")
+        font.setPointSize(19)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.comboBox = QtWidgets.QComboBox(Dialog)
+        self.comboBox.setGeometry(QtCore.QRect(80, 80, 221, 41))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(15)
+        font.setBold(True)
+        font.setWeight(75)
+        self.comboBox.setFont(font)
+        self.comboBox.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));\n"
+"background-color: rgb(186, 189, 182);")
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.pushButton = QtWidgets.QPushButton(Dialog)
+        self.pushButton.setGeometry(QtCore.QRect(140, 140, 91, 33))
+        font = QtGui.QFont()
+        font.setFamily("Raleway")
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton.setFont(font)
+        self.pushButton.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));\n"
+"background-color: rgb(186, 189, 182);")
+        self.pushButton.setObjectName("pushButton")
+
+        self.pushButton.clicked.connect(self.CloseAndRefresh)
+
+
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        self.label.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" color:#eeeeec;\">Choose Your Team </span></p></body></html>"))
+        self.comboBox.setItemText(0, _translate("Dialog", "Select team"))
+        self.comboBox.setItemText(1, _translate("Dialog", "Tigers"))
+        self.comboBox.setItemText(2, _translate("Dialog", "Pegasis"))
+        self.comboBox.setItemText(3, _translate("Dialog", "Rangers"))
+        self.pushButton.setText(_translate("Dialog", "OK"))
+
+    def CloseAndRefresh(self):
+        global value
+        value = self.comboBox.currentText()
+        print(value)
+        ui.labelText(MainWindow, value)
+        Dialog.close()
 
 
 if __name__ == "__main__":
@@ -688,4 +822,13 @@ if __name__ == "__main__":
     ui = Ui_MainWindow(1000)
     ui.setupUi(MainWindow)
     MainWindow.show()
+
+    Dialog2 = QtWidgets.QDialog()
+    dia_2 = Ui_Dialog2()
+    dia_2.setupUi(Dialog2)
+
+    Dialog = QtWidgets.QDialog()
+    dia = Ui_Dialog()
+    dia.setupUi(Dialog)
+
     sys.exit(app.exec_())

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>727</width>
-    <height>633</height>
+    <height>641</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -60,7 +60,7 @@ border-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y
      <item>
       <widget class="QLabel" name="label_10">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:600; color:#edd400;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:600; color:#edd400;&quot;&gt;0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -167,9 +167,9 @@ border-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>230</y>
+      <y>260</y>
       <width>691</width>
-      <height>291</height>
+      <height>281</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -244,7 +244,7 @@ background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, st
 padding: 0px 0px 0px 0px;</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;9700&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;1000&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
@@ -295,7 +295,7 @@ background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, st
 padding: 0px 0px 0px 0px;</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;9700&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Nil&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_12">
@@ -368,7 +368,7 @@ background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, st
      <string notr="true">background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Tigers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Nil&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="Line" name="line_3">
@@ -555,7 +555,7 @@ color: rgb(0, 0, 0);</string>
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>540</y>
+      <y>550</y>
       <width>231</width>
       <height>41</height>
      </rect>
@@ -573,14 +573,14 @@ color: rgb(0, 0, 0);</string>
 color: rgb(238, 238, 236);</string>
     </property>
     <property name="text">
-     <string>SAVE TEAM</string>
+     <string>Evaluate  Score</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pb_1">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>540</y>
+      <x>70</x>
+      <y>550</y>
       <width>231</width>
       <height>41</height>
      </rect>
@@ -664,6 +664,48 @@ background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, st
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>230</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Raleway</family>
+      <pointsize>11</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Available Players&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>230</y>
+      <width>211</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Raleway</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Selected Players&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>

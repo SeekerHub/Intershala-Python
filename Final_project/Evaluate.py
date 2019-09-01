@@ -1,15 +1,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import score
-
+import sqlite3 as db
 
 class Ui_Evaluate(object):
 
 
     def __init__(self,itemsList):
         self.itemsTextList = itemsList
-        self.p_list = score.Score_calculator((self.itemsTextList))
-        # self.total_points = [total+=i for i in self.p_list]
-        # print(total_points)
+
 
     def calculate(self):
         total = 0
@@ -20,7 +18,35 @@ class Ui_Evaluate(object):
         self.total_points = total
         # print(self.total_points)
         self.label_4.setText(str(self.total_points))
+        # self.p_list = score.Score_calculator((self.itemsTextList,self.cb_2.currentText()))
+    def combochosen_1(self):
+        self.list_2.clear()
+        self.chosen = self.cb_1.currentText()
+        # self.p_list = score.Score_calculator(self.itemsTextList,self.chosen)
+        # print(self.chosen)
+        return self.chosen
+        # self.chosen = self.cb_2.currentText()
+        # print(self.cb_2.currentText()
+        # self.list_2.addItems(self.p_list)
+        # if self.cb_2.activated ==True:
+        #     self.list_2.clear()
+        #     self.cb_2.activated.connect(self.combo_chosen)
+        # self.p_list = []
 
+
+
+    def combochosen_2(self):
+        self.list_2.clear()
+        self.chosen = self.cb_2.currentText()
+        self.p_list = score.Score_calculator(self.itemsTextList,self.chosen)
+        print(self.p_list)
+        self.chosen = self.cb_2.currentText()
+        print(self.cb_2.currentText())
+        self.list_2.addItems(self.p_list)
+        if self.cb_2.activated ==True:
+            self.list_2.clear()
+            self.cb_2.activated.connect(self.combo_chosen)
+        # self.p_list = []
 
     def setupUi(self, Evaluate):
         Evaluate.setObjectName("Evaluate")
@@ -97,7 +123,7 @@ class Ui_Evaluate(object):
         self.list_2.setFont(font)
         self.list_2.setObjectName("list_2")
 
-        self.list_2.addItems(self.p_list)
+
 
         self.pb = QtWidgets.QPushButton(Evaluate)
         self.pb.setGeometry(QtCore.QRect(250, 440, 131, 41))
@@ -149,12 +175,15 @@ class Ui_Evaluate(object):
         font.setWeight(75)
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
+        self.cb_1.activated.connect(self.combochosen_1)
 
         self.pb.clicked.connect(self.calculate)
-
+        self.cb_2.activated.connect(self.combochosen_2)
 
         self.retranslateUi(Evaluate)
         QtCore.QMetaObject.connectSlotsByName(Evaluate)
+
+
 
     def retranslateUi(self, Evaluate):
         _translate = QtCore.QCoreApplication.translate
@@ -165,10 +194,10 @@ class Ui_Evaluate(object):
         self.cb_1.setItemText(2, _translate("Evaluate", "Tigers"))
         self.cb_1.setItemText(3, _translate("Evaluate", "Rnagers"))
         self.cb_2.setItemText(0, _translate("Evaluate", "Select match"))
-        self.cb_2.setItemText(1, _translate("Evaluate", "Match-1"))
-        self.cb_2.setItemText(2, _translate("Evaluate", "Match-2"))
-        self.cb_2.setItemText(3, _translate("Evaluate", "Match-3"))
-        self.cb_2.setItemText(4, _translate("Evaluate", "Match-4"))
+        self.cb_2.setItemText(1, _translate("Evaluate", "Match"))
+        self.cb_2.setItemText(2, _translate("Evaluate", "Match2"))
+        self.cb_2.setItemText(3, _translate("Evaluate", "Match3"))
+        self.cb_2.setItemText(4, _translate("Evaluate", "Match4"))
         self.pb.setText(_translate("Evaluate", "Calculate Score"))
         self.label_2.setText(_translate("Evaluate", "<html><head/><body><p align=\"center\">Players</p></body></html>"))
         self.label_3.setText(_translate("Evaluate", "<html><head/><body><p align=\"center\">Points   :</p></body></html>"))
