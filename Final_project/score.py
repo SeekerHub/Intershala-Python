@@ -52,6 +52,8 @@ scored = []
 # sqlc = 'select PLayer from Books where title = \'{}\';'.format(name)
 # sqlc = 'SELECT * FROM Match where Player=\'{}\'
 def Score_calculator(play,match):
+    print("-------------------------")
+    print(play)
     scored = []
     match_no = str(match)
     print(match_no)

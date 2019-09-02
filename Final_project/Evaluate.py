@@ -1,44 +1,67 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import score
 import sqlite3 as db
+from PyQt5.QtWidgets import QMessageBox
+
+conn = db.connect('Info.db')
+cur = conn.cursor()
+# while(n!=0):
+
+#####################Tommoroow begin here
+# for i range(0,n):
+#     teams.append(r1[0][i])
+# print(teams)
 
 class Ui_Evaluate(object):
 
 
     def __init__(self,itemsList):
-        self.itemsTextList = itemsList
-
+        self.itemsTeamList = itemsList
+        print(self.itemsTeamList)
+        self.itemsPlayerList = []
+        self.p_list = []
 
     def calculate(self):
         total = 0
-        # print(self.itemsTextList)
+        # print(self.itemsTeamList)
         self.p_list = map(int, self.p_list)
         for i in self.p_list:
             total = total+i
         self.total_points = total
         # print(self.total_points)
         self.label_4.setText(str(self.total_points))
-        # self.p_list = score.Score_calculator((self.itemsTextList,self.cb_2.currentText()))
+        msg = QMessageBox()
+        msg.setStyleSheet("QLabel{min-width: 250px;}")
+        msg.setInformativeText('You Scored {} '.format(self.total_points))
+        msg.setWindowTitle("Scored")
+        msg.exec_()
+
+        # self.p_list = score.Score_calculator((self.itemsTeamList,self.cb_2.currentText()))
     def combochosen_1(self):
+
         self.list_2.clear()
         self.chosen = self.cb_1.currentText()
-        # self.p_list = score.Score_calculator(self.itemsTextList,self.chosen)
         # print(self.chosen)
-        return self.chosen
-        # self.chosen = self.cb_2.currentText()
-        # print(self.cb_2.currentText()
-        # self.list_2.addItems(self.p_list)
-        # if self.cb_2.activated ==True:
-        #     self.list_2.clear()
-        #     self.cb_2.activated.connect(self.combo_chosen)
-        # self.p_list = []
+        sql = 'select player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11 from Teams where name = \'{}\''.format(self.chosen)
+        # print(sql)
+        cur.execute(sql)
+        r = cur.fetchall()
+
+        print(r)
+        for i in range(11):
+            self.itemsPlayerList.append(r[0][i])
+        print("List")
+        print(self.itemsPlayerList)
+        self.list_1.addItems(self.itemsPlayerList)
+
+
 
 
 
     def combochosen_2(self):
         self.list_2.clear()
         self.chosen = self.cb_2.currentText()
-        self.p_list = score.Score_calculator(self.itemsTextList,self.chosen)
+        self.p_list = score.Score_calculator(self.itemsPlayerList,self.chosen)
         print(self.p_list)
         self.chosen = self.cb_2.currentText()
         print(self.cb_2.currentText())
@@ -67,12 +90,13 @@ class Ui_Evaluate(object):
         font.setWeight(75)
         self.cb_1.setFont(font)
         self.cb_1.setObjectName("cb_1")
-        self.cb_1.addItem("")
-        self.cb_1.addItem("")
-        self.cb_1.addItem("")
-        self.cb_1.addItem("")
-        self.cb_1.addItem("")
-        self.cb_1.setItemText(4, "")
+
+
+
+
+        self.cb_1.addItems(self.itemsTeamList)
+
+        # self.cb_1.setItemText(4, "")
         self.cb_2 = QtWidgets.QComboBox(Evaluate)
         self.cb_2.setGeometry(QtCore.QRect(360, 60, 191, 41))
         font = QtGui.QFont()
@@ -111,7 +135,7 @@ class Ui_Evaluate(object):
         self.list_1.setObjectName("list_1")
         item = QtWidgets.QListWidgetItem()
 
-        self.list_1.addItems(self.itemsTextList)
+        self.list_1.addItems(self.itemsPlayerList)
 
         self.list_2 = QtWidgets.QListWidget(Evaluate)
         self.list_2.setGeometry(QtCore.QRect(340, 140, 241, 281))
@@ -191,8 +215,8 @@ class Ui_Evaluate(object):
         self.label.setText(_translate("Evaluate", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600; color:#c17d11;\">Evaluate the score of your team</span></p></body></html>"))
         self.cb_1.setItemText(0, _translate("Evaluate", "Select Team"))
         self.cb_1.setItemText(1, _translate("Evaluate", "Pegasis"))
-        self.cb_1.setItemText(2, _translate("Evaluate", "Tigers"))
-        self.cb_1.setItemText(3, _translate("Evaluate", "Rnagers"))
+        # self.cb_1.setItemText(2, _translate("Evaluate", "Tigers"))
+        # self.cb_1.setItemText(3, _translate("Evaluate", "Rnagers"))
         self.cb_2.setItemText(0, _translate("Evaluate", "Select match"))
         self.cb_2.setItemText(1, _translate("Evaluate", "Match"))
         self.cb_2.setItemText(2, _translate("Evaluate", "Match2"))
