@@ -17,7 +17,7 @@ class Ui_Evaluate(object):
 
     def __init__(self,itemsList):
         self.itemsTeamList = itemsList
-        print(self.itemsTeamList)
+        #print(self.itemsTeamList)
         self.itemsPlayerList = []
         self.p_list = []
 
@@ -46,10 +46,8 @@ class Ui_Evaluate(object):
         # print(sql)
         cur.execute(sql)
         r = cur.fetchall()
-
-        print(r)
-        for i in range(11):
-            self.itemsPlayerList.append(r[0][i])
+        for x in r[0]:
+            self.itemsPlayerList.append(x)
         print("List")
         print(self.itemsPlayerList)
         self.list_1.addItems(self.itemsPlayerList)

@@ -436,19 +436,26 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.actionOpen_Team.setFont(font)
+        self.actionEvaluate_Team.setFont(font)
         self.actionOpen_Team.setObjectName("actionOpen_Team")
         self.menuManage_team.addAction(self.actionNew_Team)
         self.menuManage_team.addAction(self.actionOpen_Team)
-        self.menuManage_team.addAction(self.actionManage_Team)
+        self.menuManage_team.addAction(self.actionEvaluate_Team)
+
+        # self.menuManage_team.addAction(self.actionManage_Team)
         self.menuManage_team.addAction(self.actionSave_Team)
         self.menuManage_team.addSeparator()
         self.menuManage_team.addAction(self.actionClose)
         self.menubar.addAction(self.menuManage_team.menuAction())
 
 
-        self.actionOpen_Team.triggered.connect(self.openTeam)
-        self.actionEvaluate_Team.triggered.connect(self.openWindow)
+        self.actionOpen_Team.triggered.connect(self.openTeam_2)
+        # self.actionEvaluate_Team.triggered.connect(self.openTeam)
         self.actionNew_Team.triggered.connect(self.NewTeam)
+        self.actionSave_Team.triggered.connect(self.Saveteam)
+        self.actionEvaluate_Team.triggered.connect(self.openTeam)
+
+
 
         self.list_1.itemDoubleClicked.connect(self.removelist1)
         self.list_2.itemDoubleClicked.connect(self.removelist2)
@@ -459,8 +466,7 @@ class Ui_MainWindow(object):
         self.rb4.toggled.connect(self.checkstate)
         # self.Saveteam()
         # self.pb_2.clicked.connect(self.openWindow)
-        self.actionSave_Team.triggered.connect(self.Saveteam)
-        self.actionEvaluate_Team.triggered.connect(self.openTeam)
+
         self.pb_2.clicked.connect(self.Saveteam)
 
 
@@ -538,14 +544,14 @@ class Ui_MainWindow(object):
         curs = con.cursor()
 
         self.name = str(value)
-        print(self.name)
+        # print(self.name)
         self.itemsTextList_2 =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
-        print(self.itemsTextList_2[0])
+        # print(self.itemsTextList_2[0])
         curs.execute("INSERT INTO Teams (name,player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (self.name, self.itemsTextList_2[0], self.itemsTextList_2[1], self.itemsTextList_2[2], self.itemsTextList_2[3], self.itemsTextList_2[4], self.itemsTextList_2[5], self.itemsTextList_2[6], self.itemsTextList_2[7], self.itemsTextList_2[8], self.itemsTextList_2[9], self.itemsTextList_2[10]))
         con.commit()
         r1 = curs.execute("SELECT name FROM Teams")
-        print("Work")
-        print(len(r1.fetchall()))
+        # print("Work")
+        # print(len(r1.fetchall()))
 
     def removelist1(self, item):
         if(self.count<11):
@@ -726,8 +732,9 @@ class Ui_MainWindow(object):
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(decrease))
         self.l = decrease
 
-    # def openTeam(self, MainWindow):
-        # Dialog.show()
+    def openTeam_2(self):
+        Dialog.show()
+
 
     def openTeam(self):
         itemsTextList =  []
@@ -737,7 +744,7 @@ class Ui_MainWindow(object):
         # n = len(r1.fetchall())
         # print(n)
 
-        print(r1.fetchall())
+        # print(r1.fetchall())
         for x in team:
             itemsTextList.append(x[0])
 
@@ -748,12 +755,44 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.window)
         self.window.show()
 
-    def labelText(self, MainWindow, value):
+    def labelText_2(self, MainWindow, value):
         self.name = str(value)
         self.label_16.setText(str(value))
+        sql = 'select player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11 from Teams where name = \'{}\''.format(value)
+        # print(sql)
+        curs.execute(sql)
+        r1 = curs.fetchall()
+        # print(r1)
+        for x in r1[0]:
+            print(x)
+            self.list_2.addItem(x)
+
+    def labelText(self, MainWindow, value):
+        self.team_available = []
+        self.name = str(value)
+        r1 = curs.execute("SELECT name FROM Teams")
+        team = r1.fetchall()
+        # print(team)
+
+        for x in team:
+            self.team_available.append(x[0])
+
+
+        if self.name in self.team_available:
+            msg = QMessageBox()
+            msg.setStyleSheet("QLabel{min-width: 150px;}")
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText('Team name Exist , Try some another name')
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            Dialog2.show()
+        else:
+            self.label_16.setText(str(value))
 
 class Ui_Dialog2(object):
     def setupUi(self, Dialog2):
+
         Dialog2.setObjectName("Dialog2")
         Dialog2.resize(369, 160)
         Dialog2.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y2:0.693, stop:0.603448 rgba(0, 191, 183, 221));")
@@ -801,20 +840,33 @@ class Ui_Dialog2(object):
         self.lineEdit.setPlaceholderText(_translate("Dialog2", "Enter here"))
 
     def CloseAndRefresh_2(self):
-        print("Working")
+        # print("Working")
         global value
         value = self.lineEdit.text()
-        print(value)
+        # print(value)
         ui.labelText(MainWindow, value)
         Dialog2.close()
 
+
+
+
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
+        self.teamlist = []
         Dialog.setObjectName("Dialog")
         Dialog.resize(400, 198)
         Dialog.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0.311316, y1:0.375, x2:0.658, y2:0.693, stop:0.603448 rgba(0, 191, 183, 221));")
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(80, 20, 231, 51))
+
+        r1 = curs.execute("SELECT name FROM Teams")
+        team = r1.fetchall()
+        print(team)
+        for x in team:
+            print(x)
+            self.teamlist.append(x[0])
+        print(self.teamlist)
+
         font = QtGui.QFont()
         font.setFamily("Raleway")
         font.setPointSize(19)
@@ -833,10 +885,9 @@ class Ui_Dialog(object):
         self.comboBox.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));\n"
 "background-color: rgb(186, 189, 182);")
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
+
+        self.comboBox.addItems(self.teamlist)
+
         self.pushButton = QtWidgets.QPushButton(Dialog)
         self.pushButton.setGeometry(QtCore.QRect(140, 140, 91, 33))
         font = QtGui.QFont()
@@ -859,17 +910,13 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.label.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" color:#eeeeec;\">Choose Your Team </span></p></body></html>"))
-        self.comboBox.setItemText(0, _translate("Dialog", "Select team"))
-        self.comboBox.setItemText(1, _translate("Dialog", "Tigers"))
-        self.comboBox.setItemText(2, _translate("Dialog", "Pegasis"))
-        self.comboBox.setItemText(3, _translate("Dialog", "Rangers"))
         self.pushButton.setText(_translate("Dialog", "OK"))
 
     def CloseAndRefresh(self):
-        global value
-        value = self.comboBox.currentText()
-        print(value)
-        ui.labelText(MainWindow, value)
+        global value_2
+        value_2 = self.comboBox.currentText()
+        # print(value)
+        ui.labelText_2(MainWindow, value_2)
         Dialog.close()
 
 
