@@ -740,11 +740,6 @@ class Ui_MainWindow(object):
         itemsTextList =  []
         r1 = curs.execute("SELECT name FROM Teams")
         team = r1.fetchall()
-        print("This part Begins")
-        # n = len(r1.fetchall())
-        # print(n)
-
-        # print(r1.fetchall())
         for x in team:
             itemsTextList.append(x[0])
 
@@ -763,6 +758,7 @@ class Ui_MainWindow(object):
         curs.execute(sql)
         r1 = curs.fetchall()
         # print(r1)
+        self.list_2.clear()
         for x in r1[0]:
             print(x)
             self.list_2.addItem(x)

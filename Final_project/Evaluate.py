@@ -38,7 +38,7 @@ class Ui_Evaluate(object):
 
         # self.p_list = score.Score_calculator((self.itemsTeamList,self.cb_2.currentText()))
     def combochosen_1(self):
-
+        self.itemsPlayerList = []
         self.list_2.clear()
         self.chosen = self.cb_1.currentText()
         # print(self.chosen)
@@ -133,7 +133,7 @@ class Ui_Evaluate(object):
         self.list_1.setObjectName("list_1")
         item = QtWidgets.QListWidgetItem()
 
-        self.list_1.addItems(self.itemsPlayerList)
+        # self.list_1.addItems(self.itemsPlayerList)
 
         self.list_2 = QtWidgets.QListWidget(Evaluate)
         self.list_2.setGeometry(QtCore.QRect(340, 140, 241, 281))
