@@ -460,6 +460,8 @@ class Ui_MainWindow(object):
         self.list_1.itemDoubleClicked.connect(self.removelist1)
         self.list_2.itemDoubleClicked.connect(self.removelist2)
 
+
+
         self.rb1.toggled.connect(self.checkstate)
         self.rb2.toggled.connect(self.checkstate)
         self.rb3.toggled.connect(self.checkstate)
@@ -523,6 +525,7 @@ class Ui_MainWindow(object):
         self.wks = 0
         self.l = 1000
         self.h = 0
+        self.total = 0
         self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.h))
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.l))
         self.label_10.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bats))
@@ -539,7 +542,6 @@ class Ui_MainWindow(object):
         self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">0</span></p></body></html>")
 
     def Saveteam(self):
-
         con = db.connect('Info.db')
         curs = con.cursor()
 
@@ -547,14 +549,15 @@ class Ui_MainWindow(object):
         # print(self.name)
         self.itemsTextList_2 =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
         # print(self.itemsTextList_2[0])
-        curs.execute("INSERT INTO Teams (name,player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (self.name, self.itemsTextList_2[0], self.itemsTextList_2[1], self.itemsTextList_2[2], self.itemsTextList_2[3], self.itemsTextList_2[4], self.itemsTextList_2[5], self.itemsTextList_2[6], self.itemsTextList_2[7], self.itemsTextList_2[8], self.itemsTextList_2[9], self.itemsTextList_2[10]))
+        curs.execute("INSERT INTO Teams (name,player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11,value) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (self.name, self.itemsTextList_2[0], self.itemsTextList_2[1], self.itemsTextList_2[2], self.itemsTextList_2[3], self.itemsTextList_2[4], self.itemsTextList_2[5], self.itemsTextList_2[6], self.itemsTextList_2[7], self.itemsTextList_2[8], self.itemsTextList_2[9], self.itemsTextList_2[10], self.point_used))
         con.commit()
         r1 = curs.execute("SELECT name FROM Teams")
         # print("Work")
         # print(len(r1.fetchall()))
 
     def removelist1(self, item):
-        if(self.count<11):
+        self.total = self.bats +self.bowls + self.ars + self.wks
+        if(self.total<11):
             c = item.text()
             if(data_1.get(c)=='BAT'):
                 n = data_value.get(c)
@@ -604,6 +607,8 @@ class Ui_MainWindow(object):
 
 
             k = self.l - n
+
+
             if k<0:
                 msg = QMessageBox()
                 msg.setStyleSheet("QLabel{min-width: 250px;}")
@@ -618,18 +623,21 @@ class Ui_MainWindow(object):
                 self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(k))
             else:
                 self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.l))
+
+
+
             self.l = k
-            # print(self.h)
             increase = self.h + n
+
             if increase>1000:
                 increase = 0
                 self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(increase))
             else:
                 self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(increase))
+
             self.h = increase
-
             self.count+=1
-
+            self.point_used = increase
 
         else:
             # print("player limit exceeded")
@@ -642,6 +650,7 @@ class Ui_MainWindow(object):
 
             self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">1</span></p></body></html>")
             msg.exec_()
+
 
     def checkstate(self):
         state1='OFF'
@@ -754,7 +763,6 @@ class Ui_MainWindow(object):
         self.name = str(value)
         self.label_16.setText(str(value))
         sql = 'select player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11 from Teams where name = \'{}\''.format(value)
-        # print(sql)
         curs.execute(sql)
         r1 = curs.fetchall()
         # print(r1)
@@ -762,6 +770,13 @@ class Ui_MainWindow(object):
         for x in r1[0]:
             print(x)
             self.list_2.addItem(x)
+        curs.execute('Select value from Teams where name=\"{}\"'.format(value))
+        r = curs.fetchone()
+        self.point_avai = 1000 - int(r[0])
+        self.label_15.setText(str(r[0]))
+
+        self.label_14.setText(str(self.point_avai))
+
 
     def labelText(self, MainWindow, value):
         self.team_available = []

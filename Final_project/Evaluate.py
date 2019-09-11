@@ -29,6 +29,7 @@ class Ui_Evaluate(object):
             total = total+i
         self.total_points = total
         # print(self.total_points)
+
         self.label_4.setText(str(self.total_points))
         msg = QMessageBox()
         msg.setStyleSheet("QLabel{min-width: 250px;}")
@@ -46,6 +47,9 @@ class Ui_Evaluate(object):
         # print(sql)
         cur.execute(sql)
         r = cur.fetchall()
+        print("--------------------")
+        print(r[0])
+        print("----------------------")
         for x in r[0]:
             self.itemsPlayerList.append(x)
         print("List")
