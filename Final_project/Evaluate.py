@@ -5,73 +5,54 @@ from PyQt5.QtWidgets import QMessageBox
 
 conn = db.connect('Info.db')
 cur = conn.cursor()
-# while(n!=0):
-
-#####################Tommoroow begin here
-# for i range(0,n):
-#     teams.append(r1[0][i])
-# print(teams)
 
 class Ui_Evaluate(object):
 
 
     def __init__(self,itemsList):
         self.itemsTeamList = itemsList
-        #print(self.itemsTeamList)
         self.itemsPlayerList = []
-        self.p_list = []
+        self.points_list = []
 
     def calculate(self):
         total = 0
-        # print(self.itemsTeamList)
-        self.p_list = map(int, self.p_list)
-        for i in self.p_list:
+        self.points_list = map(int, self.points_list)
+        for i in self.points_list:
             total = total+i
         self.total_points = total
-        # print(self.total_points)
 
         self.label_4.setText(str(self.total_points))
         msg = QMessageBox()
-        msg.setStyleSheet("QLabel{min-width: 250px;}")
-        msg.setInformativeText('You Scored {} '.format(self.total_points))
+        msg.setStyleSheet("QLabel{text-align:center;min-width: 250px;}")
+        msg.setInformativeText('You Scored \n {} '.format(self.total_points))
         msg.setWindowTitle("Scored")
         msg.exec_()
 
-        # self.p_list = score.Score_calculator((self.itemsTeamList,self.cb_2.currentText()))
     def combochosen_1(self):
+        self.list_1.clear()
         self.itemsPlayerList = []
         self.list_2.clear()
         self.chosen = self.cb_1.currentText()
-        # print(self.chosen)
         sql = 'select player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11 from Teams where name = \'{}\''.format(self.chosen)
-        # print(sql)
         cur.execute(sql)
         r = cur.fetchall()
-        print("--------------------")
-        print(r[0])
-        print("----------------------")
         for x in r[0]:
             self.itemsPlayerList.append(x)
-        print("List")
-        print(self.itemsPlayerList)
         self.list_1.addItems(self.itemsPlayerList)
-
-
-
 
 
     def combochosen_2(self):
         self.list_2.clear()
         self.chosen = self.cb_2.currentText()
-        self.p_list = score.Score_calculator(self.itemsPlayerList,self.chosen)
-        print(self.p_list)
+        self.points_list = score.Score_calculator(self.itemsPlayerList,self.chosen)
+        # print(self.points_list)
         self.chosen = self.cb_2.currentText()
-        print(self.cb_2.currentText())
-        self.list_2.addItems(self.p_list)
+
+        self.list_2.addItems(self.points_list)
         if self.cb_2.activated ==True:
             self.list_2.clear()
             self.cb_2.activated.connect(self.combo_chosen)
-        # self.p_list = []
+        # self.points_list = []
 
     def setupUi(self, Evaluate):
         Evaluate.setObjectName("Evaluate")
@@ -92,9 +73,6 @@ class Ui_Evaluate(object):
         font.setWeight(75)
         self.cb_1.setFont(font)
         self.cb_1.setObjectName("cb_1")
-
-
-
 
         self.cb_1.addItems(self.itemsTeamList)
 
@@ -216,14 +194,11 @@ class Ui_Evaluate(object):
         Evaluate.setWindowTitle(_translate("Evaluate", "Form"))
         self.label.setText(_translate("Evaluate", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600; color:#c17d11;\">Evaluate the score of your team</span></p></body></html>"))
         self.cb_1.setItemText(0, _translate("Evaluate", "Select Team"))
-        self.cb_1.setItemText(1, _translate("Evaluate", "Pegasis"))
-        # self.cb_1.setItemText(2, _translate("Evaluate", "Tigers"))
-        # self.cb_1.setItemText(3, _translate("Evaluate", "Rnagers"))
         self.cb_2.setItemText(0, _translate("Evaluate", "Select match"))
         self.cb_2.setItemText(1, _translate("Evaluate", "Match"))
         self.cb_2.setItemText(2, _translate("Evaluate", "Match2"))
         self.cb_2.setItemText(3, _translate("Evaluate", "Match3"))
-        self.cb_2.setItemText(4, _translate("Evaluate", "Match4"))
+        # self.cb_2.setItemText(4, _translate("Evaluate", "Match4"))
         self.pb.setText(_translate("Evaluate", "Calculate Score"))
         self.label_2.setText(_translate("Evaluate", "<html><head/><body><p align=\"center\">Players</p></body></html>"))
         self.label_3.setText(_translate("Evaluate", "<html><head/><body><p align=\"center\">Points   :</p></body></html>"))

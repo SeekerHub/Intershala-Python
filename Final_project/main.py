@@ -18,12 +18,12 @@ play = []
 while(i!=len(r)):
     play.append(r[i][0])
     i+=1
-styel = ['BAT','BWL','WK','AR']
+style = ['BAT','BWL','WK','AR']
 bowl =[]
 bat = []
 ar = []
 wk = []
-for j in styel:
+for j in style:
     # print(j)
     sql2 = 'SELECT player from Stats WHERE ctg=\'{}\''.format(j)
     curs.execute(sql2)
@@ -80,7 +80,7 @@ class Ui_MainWindow(object):
         self.bowls = 0
         self.ars = 0
         self.wks = 0
-        self.l = l
+        self.points_Available = l
         self.h = h
 
 
@@ -449,11 +449,10 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuManage_team.menuAction())
 
 
-        self.actionOpen_Team.triggered.connect(self.openTeam_2)
-        # self.actionEvaluate_Team.triggered.connect(self.openTeam)
+        self.actionOpen_Team.triggered.connect(self.open_Team)
         self.actionNew_Team.triggered.connect(self.NewTeam)
         self.actionSave_Team.triggered.connect(self.Saveteam)
-        self.actionEvaluate_Team.triggered.connect(self.openTeam)
+        self.actionEvaluate_Team.triggered.connect(self.Evaluate_Team)
 
 
 
@@ -466,8 +465,6 @@ class Ui_MainWindow(object):
         self.rb2.toggled.connect(self.checkstate)
         self.rb3.toggled.connect(self.checkstate)
         self.rb4.toggled.connect(self.checkstate)
-        # self.Saveteam()
-        # self.pb_2.clicked.connect(self.openWindow)
 
         self.pb_2.clicked.connect(self.Saveteam)
 
@@ -523,11 +520,11 @@ class Ui_MainWindow(object):
         self.bowls = 0
         self.ars = 0
         self.wks = 0
-        self.l = 1000
+        self.points_Available = 1000
         self.h = 0
         self.total = 0
         self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.h))
-        self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.l))
+        self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.points_Available))
         self.label_10.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bats))
         self.label_9.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bowls))
         self.label_8.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.ars))
@@ -537,66 +534,74 @@ class Ui_MainWindow(object):
         self.list_1.clear()
         self.list_2.clear()
         self.list_1.addItems(play)
-        # print(self.l)
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">1000</span></p></body></html>")
         self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">0</span></p></body></html>")
 
     def Saveteam(self):
-        con = db.connect('Info.db')
-        curs = con.cursor()
+        try:
+            self.name = str(value)
+            con = db.connect('Info.db')
+            curs = con.cursor()
+            self.itemsTextList_2 =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
+            curs.execute("INSERT INTO Teams (name,player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11,value,bats,bowls,wks,ars) values (?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (self.name, self.itemsTextList_2[0], self.itemsTextList_2[1], self.itemsTextList_2[2], self.itemsTextList_2[3], self.itemsTextList_2[4], self.itemsTextList_2[5], self.itemsTextList_2[6], self.itemsTextList_2[7], self.itemsTextList_2[8], self.itemsTextList_2[9], self.itemsTextList_2[10],self.point_used,self.bats ,self.bowls ,self.wks ,self.ars))
+            con.commit()
+            # curs.execute("INSERT INTO Teams (bats,bowls,wks,ars) values (?, ?, ?, ?)",(self.bats ,self.bowls ,self.wks ,self.ars))
+            # con.commit()
+            msg = QMessageBox()
+            msg.setStyleSheet("QLabel{min-width: 150px;}")
+            msg.setIcon(QMessageBox.Information)
+            msg.setInformativeText('Congratulations! Your Team is created')
+            msg.exec_()
 
-        self.name = str(value)
-        # print(self.name)
-        self.itemsTextList_2 =  [str(self.list_2.item(i).text()) for i in range(self.list_2.count())]
-        # print(self.itemsTextList_2[0])
-        curs.execute("INSERT INTO Teams (name,player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11,value) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (self.name, self.itemsTextList_2[0], self.itemsTextList_2[1], self.itemsTextList_2[2], self.itemsTextList_2[3], self.itemsTextList_2[4], self.itemsTextList_2[5], self.itemsTextList_2[6], self.itemsTextList_2[7], self.itemsTextList_2[8], self.itemsTextList_2[9], self.itemsTextList_2[10], self.point_used))
-        con.commit()
-        r1 = curs.execute("SELECT name FROM Teams")
-        # print("Work")
-        # print(len(r1.fetchall()))
+        except NameError:
+            msg = QMessageBox()
+            msg.setStyleSheet("QLabel{min-width: 100px;}")
+            msg.setIcon(QMessageBox.Warning)
+            msg.setInformativeText('Please create a Team first!')
+            msg.setWindowTitle("Error")
+            msg.exec_()
 
     def removelist1(self, item):
         self.total = self.bats +self.bowls + self.ars + self.wks
         if(self.total<11):
             c = item.text()
+            # print(c)
             if(data_1.get(c)=='BAT'):
-                n = data_value.get(c)
+                player_value = data_value.get(c)
                 self.bats+=1
                 self.label_10.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bats))
-
-
                 self.list_1.takeItem(self.list_1.row(item))
                 self.list_2.addItem(item.text())
+                bat.remove(c)
+
                 # count+=1
             if(data_1.get(c)=='BWL'):
-                n = data_value.get(c)
+                player_value = data_value.get(c)
                 self.bowls+=1
                 self.label_9.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bowls))
                 self.list_1.takeItem(self.list_1.row(item))
                 self.list_2.addItem(item.text())
                 # count+=1
+                bowl.remove(c)
 
 
             if(data_1.get(c)=='AR'):
-                n = data_value.get(c)
+                player_value = data_value.get(c)
                 self.ars+=1
                 self.label_8.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.ars))
                 self.list_1.takeItem(self.list_1.row(item))
                 self.list_2.addItem(item.text())
-                # count+=1
-
+                ar.remove(c)
 
             if(data_1.get(c)=='WK'):
-                n = data_value.get(c)
+                player_value = data_value.get(c)
                 self.wks+=1
                 if self.wks>1:
                     msg = QMessageBox()
                     msg.setStyleSheet("QLabel{min-width: 200px;}")
                     msg.setIcon(QMessageBox.Critical)
-                    # msg.setText("Error")
                     msg.setInformativeText('YOU CAN\'T INSERT MORE THAN ONE WICKETKEEPER')
                     msg.setWindowTitle("Error")
-
                     self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">1</span></p></body></html>")
                     msg.exec_()
 
@@ -604,30 +609,23 @@ class Ui_MainWindow(object):
                     self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.wks))
                     self.list_1.takeItem(self.list_1.row(item))
                     self.list_2.addItem(item.text())
+                    wk.remove(c)
 
-
-            k = self.l - n
+            k = self.points_Available - player_value
 
 
             if k<0:
                 msg = QMessageBox()
                 msg.setStyleSheet("QLabel{min-width: 250px;}")
-                # msg.setIcon(QMessageBox.Critical)
-                # msg.setText("Error")
                 msg.setInformativeText('Not Enoght Point Available')
                 msg.setWindowTitle("Error")
-
-                self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">1</span></p></body></html>")
                 msg.exec_()
-                # k < 0
                 self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(k))
             else:
-                self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.l))
+                self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(self.points_Available))
 
-
-
-            self.l = k
-            increase = self.h + n
+            self.points_Available = k
+            increase = self.h + player_value
 
             if increase>1000:
                 increase = 0
@@ -640,119 +638,79 @@ class Ui_MainWindow(object):
             self.point_used = increase
 
         else:
-            # print("player limit exceeded")
             msg = QMessageBox()
             msg.setStyleSheet("QLabel{min-width: 250px;}")
-            # msg.setIcon(QMessageBox.Critical)
-            # msg.setText("Error")
             msg.setInformativeText('Player Limit Exceeded')
             msg.setWindowTitle("Error")
-
-            self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">1</span></p></body></html>")
             msg.exec_()
 
 
     def checkstate(self):
-        state1='OFF'
-        state2='OFF'
-        state3 = 'OFF'
-        state4='OFF'
+
         if self.rb1.isChecked()==True:
-            state1='ON'
             self.list_1.clear()
             self.list_1.addItems(bat)
 
-        else:
-            state1='OFF'
-
-        if self.rb2.isChecked()==True:
-            state2='ON'
+        elif self.rb2.isChecked()==True:
             self.list_1.clear()
             self.list_1.addItems(bowl)
 
-        else:
-            state2='OFF'
-
-        if self.rb3.isChecked()==True:
-            state3='ON'
+        elif self.rb3.isChecked()==True:
             self.list_1.clear()
             self.list_1.addItems(wk)
 
-        else:
-            state3='OFF'
-
-        if self.rb4.isChecked()==True:
-            state4='ON'
+        elif self.rb4.isChecked()==True:
             self.list_1.clear()
             self.list_1.addItems(ar)
-
-        else:
-            state4='OFF'
-        # self.t1.setText("Button1 is {} Button2 is {}".format(state1,state2))
-
-
-
 
     def removelist2(self, item):
 
         c = item.text()
         if(data_1.get(c)=='BAT'):
-            n = data_value.get(c)
+            player_value = data_value.get(c)
             self.bats-=1
             self.label_10.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bats))
             self.list_2.takeItem(self.list_2.row(item))
             self.list_1.addItem(item.text())
+            bat.append(c)
         if(data_1.get(c)=='BWL'):
-            n = data_value.get(c)
+            player_value = data_value.get(c)
             self.bowls-=1
             self.label_9.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.bowls))
             self.list_2.takeItem(self.list_2.row(item))
             self.list_1.addItem(item.text())
-
+            bowl.append(c)
         if(data_1.get(c)=='AR'):
-            n = data_value.get(c)
+            player_value = data_value.get(c)
             self.ars-=1
             self.label_8.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">{}</span></p></body></html>".format(self.ars))
             self.list_2.takeItem(self.list_2.row(item))
             self.list_1.addItem(item.text())
-
+            ar.append(c)
         if(data_1.get(c)=='WK'):
-            n = data_value.get(c)
+            player_value = data_value.get(c)
             self.wks-=1
-            if self.wks>1:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Critical)
-                msg.setText("Error")
-                msg.setInformativeText('YOU CAN\'T INSERT MORE THAN ONE WICKETKEEPER')
-                msg.setWindowTitle("Error")
+            self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">0</span></p></body></html>")
+            self.list_2.takeItem(self.list_2.row(item))
+            self.list_1.addItem(item.text())
+            wk.append(c)
 
-                self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">1</span></p></body></html>")
-                msg.exec_()
-            else:
-                self.label_7.setText( "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#edd400;\">0</span></p></body></html>")
-                self.list_2.takeItem(self.list_2.row(item))
-                self.list_1.addItem(item.text())
-
-
-        k = self.h - n
+        k = self.h - player_value
         self.label_15.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(k))
         self.h = k
-        decrease = self.l + n
+        decrease = self.points_Available + player_value
         self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(decrease))
-        self.l = decrease
+        self.points_Available = decrease
 
-    def openTeam_2(self):
+    def open_Team(self):
         Dialog.show()
 
-
-    def openTeam(self):
+    def Evaluate_Team(self):
         itemsTextList =  []
         r1 = curs.execute("SELECT name FROM Teams")
         team = r1.fetchall()
         for x in team:
             itemsTextList.append(x[0])
-
-        print(itemsTextList)
         self.window = QtWidgets.QMainWindow()
         self.itemsList = itemsTextList
         self.ui = Ui_Evaluate(self.itemsList)
@@ -765,11 +723,18 @@ class Ui_MainWindow(object):
         sql = 'select player1,player2,player3,player4,player5,player6,player7,player8,player9,player10,player11 from Teams where name = \'{}\''.format(value)
         curs.execute(sql)
         r1 = curs.fetchall()
-        # print(r1)
         self.list_2.clear()
         for x in r1[0]:
-            print(x)
             self.list_2.addItem(x)
+
+        curs.execute("SELECT bats,bowls,wks,ars FROM Teams WHERE name=\'{}\'".format(value))
+        r = curs.fetchone()
+        print(r)
+        self.label_10.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(str(r[3])))
+        self.label_9.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(str(r[2])))
+        self.label_8.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(str(r[1])))
+        self.label_7.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">{}</span></p></body></html>".format(str(r[0])))
+
         curs.execute('Select value from Teams where name=\"{}\"'.format(value))
         r = curs.fetchone()
         self.point_avai = 1000 - int(r[0])
@@ -783,11 +748,8 @@ class Ui_MainWindow(object):
         self.name = str(value)
         r1 = curs.execute("SELECT name FROM Teams")
         team = r1.fetchall()
-        # print(team)
-
         for x in team:
             self.team_available.append(x[0])
-
 
         if self.name in self.team_available:
             msg = QMessageBox()
@@ -815,8 +777,7 @@ class Ui_Dialog2(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_2.setFont(font)
-        self.pushButton_2.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));\n"
-"background-color: rgb(186, 189, 182);")
+        self.pushButton_2.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.983, y2:1, stop:0 rgba(255, 255, 255, 255));\n""background-color: rgb(186, 189, 182);")
         self.pushButton_2.setObjectName("pushButton_2")
         self.label = QtWidgets.QLabel(Dialog2)
         self.label.setGeometry(QtCore.QRect(70, 10, 231, 51))
@@ -851,14 +812,11 @@ class Ui_Dialog2(object):
         self.lineEdit.setPlaceholderText(_translate("Dialog2", "Enter here"))
 
     def CloseAndRefresh_2(self):
-        # print("Working")
+
         global value
         value = self.lineEdit.text()
-        # print(value)
         ui.labelText(MainWindow, value)
         Dialog2.close()
-
-
 
 
 class Ui_Dialog(object):
@@ -872,12 +830,8 @@ class Ui_Dialog(object):
 
         r1 = curs.execute("SELECT name FROM Teams")
         team = r1.fetchall()
-        print(team)
         for x in team:
-            print(x)
             self.teamlist.append(x[0])
-        print(self.teamlist)
-
         font = QtGui.QFont()
         font.setFamily("Raleway")
         font.setPointSize(19)
@@ -926,7 +880,7 @@ class Ui_Dialog(object):
     def CloseAndRefresh(self):
         global value_2
         value_2 = self.comboBox.currentText()
-        # print(value)
+
         ui.labelText_2(MainWindow, value_2)
         Dialog.close()
 
